@@ -641,7 +641,6 @@ implicit val formattingPreferences = FormattingPreferences.setPreference(SpacesW
     """class Person(
       |    name: String,
       |    age: Int) {
-      |
       |  def firstMethod = 42
       |}"""
 
@@ -657,7 +656,6 @@ implicit val formattingPreferences = FormattingPreferences.setPreference(SpacesW
     |  with Logging
     |  with Identifiable
     |  with Serializable {
-    |
     |  def firstMethod = 42
     |}"""
 
@@ -671,7 +669,6 @@ implicit val formattingPreferences = FormattingPreferences.setPreference(SpacesW
       |    name: String,
       |    age: Int)
       |  extends Entity {
-      |
       |  def method() = 42
       |}"""
 
@@ -683,7 +680,6 @@ implicit val formattingPreferences = FormattingPreferences.setPreference(SpacesW
   """trait A
     |  extends B
     |  with C {
-    |
     |  println("d")
     |}"""
 
