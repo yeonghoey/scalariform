@@ -742,8 +742,12 @@ trait ExprFormatter { self: HasFormattingPreferences with AnnotationFormatter wi
     caseClausesOrStatSeq match {
       case Left(caseClauses) ⇒ // TODO: Duplication
         if (!singleLineBlock) {
-          formatResult = formatResult.before(caseClauses.firstToken, indentedInstruction)
-          formatResult ++= format(caseClauses)(indentedState)
+          if (hiddenPredecessors(caseClauses.firstToken).containsNewline || caseClauses.caseClauses.length > 1) {
+            formatResult = formatResult.before(caseClauses.firstToken, indentedInstruction)
+            formatResult ++= format(caseClauses)(indentedState)
+          } else {
+            formatResult ++= format(caseClauses)(newFormatterState)
+          }
           formatResult = formatResult.before(rbrace, newFormatterState.currentIndentLevelInstruction)
         } else
           formatResult ++= format(caseClauses)(newFormatterState)
