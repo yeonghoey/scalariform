@@ -615,7 +615,9 @@ implicit val formattingPreferences = FormattingPreferences.setPreference(SpacesW
     |})"""
 
   {
-    implicit val formattingPreferences = FormattingPreferences.setPreference(DoubleIndentClassDeclaration, true)
+    implicit val formattingPreferences = FormattingPreferences
+      .setPreference(DoubleIndentClassDeclaration, true)
+      .setPreference(DanglingCloseParenthesis, Prevent)
     """class Person(
       |  name: String,
       |  age: Int)
