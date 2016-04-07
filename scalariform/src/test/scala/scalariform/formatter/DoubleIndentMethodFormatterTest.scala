@@ -84,6 +84,44 @@ class DoubleIndentMethodFormatterTest extends AbstractFormatterTest {
     |    a: String,
     |    b: String
     |)"""
+
+  """def foo(
+    |    a: String,
+    |      b: String)( implicit c: String
+    |      )""" ==>
+  """def foo(
+    |    a: String,
+    |    b: String
+    |)(implicit c: String)"""
+  }
+  {
+    implicit val formattingPreferences = FormattingPreferences
+      .setPreference(DoubleIndentMethodDeclaration, true)
+      .setPreference(DanglingCloseParenthesis, Prevent)
+
+    """def foo(
+    |    a: String,
+    |      b: String)(
+    |      implicit c: String
+    |      )""" ==>
+    """def foo(
+    |    a: String,
+    |    b: String)(
+    |  implicit
+    |    c: String)"""
+
+
+    """def foo(
+    |    a: String,
+    |     b: String)(
+    |      implicit
+    |        c: String
+    |      )""" ==>
+    """def foo(
+    |    a: String,
+    |    b: String)(
+    |  implicit
+    |    c: String)"""
   }
 
   def parse(parser: ScalaParser) = parser.nonLocalDefOrDcl()

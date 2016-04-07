@@ -1052,9 +1052,9 @@ trait ExprFormatter { self: HasFormattingPreferences with AnnotationFormatter wi
    * Groups consecutive single line params in a [[scalariform.parser.ParamClause]] for alignment.
    * The head of the return value (and head of the params list in the returned ConsecutiveSingleLineParams is guaranteed
    * to be the very first parameter in the paramClause. The other parameters are not necessarily in the order they appear.
+   *
    * @param paramClause
    * @param formatterState
-   *
    * @return List of grouped params. Left stores a group of parameters that can be aligned together,
    *         Right stores an unalignable param.
    */
@@ -1222,8 +1222,10 @@ trait ExprFormatter { self: HasFormattingPreferences with AnnotationFormatter wi
     def alignFirstParam(firstParam: Param) = {
       // Place implicit on it's own line
       for (implicitToken ← implicitOption) {
-        if (hiddenPredecessors(implicitToken).containsNewline || (containsNewline(firstParam) && alignParameters))
-          formatResult = formatResult.before(implicitToken, paramFormatterState.indent(paramIndent).currentIndentLevelInstruction)
+        if (hiddenPredecessors(implicitToken).containsNewline || (containsNewline(firstParam) && alignParameters)) {
+          val implicitIndent = 1 // For highlighig `implicit` keyword, make it dedented if doubleIndentParams is true
+          formatResult = formatResult.before(implicitToken, paramFormatterState.indent(implicitIndent).currentIndentLevelInstruction)
+        }
       }
 
       val firstToken = firstParam.firstToken
