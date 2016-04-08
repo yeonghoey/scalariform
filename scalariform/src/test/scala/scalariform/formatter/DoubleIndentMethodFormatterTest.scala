@@ -34,7 +34,8 @@ class DoubleIndentMethodFormatterTest extends AbstractFormatterTest {
 
   """def a
     |: String""" ==>
-  """def a: String"""
+  """def a
+    |  : String""".stripMargin
 
  """def a()
     |{

@@ -936,8 +936,12 @@ trait ExprFormatter { self: HasFormattingPreferences with AnnotationFormatter wi
       formatResult ++= format(typeParamClause.contents)
     val doubleIndentParams = formattingPreferences(DoubleIndentMethodDeclaration)
     formatResult ++= formatParamClauses(paramClauses, doubleIndentParams)
-    for ((colon, type_) ← returnTypeOpt)
+
+    for ((colon, type_) ← returnTypeOpt) {
+      if (hiddenPredecessors(colon).containsNewline && doubleIndentParams)
+        formatResult = formatResult.before(colon, formatterState.nextIndentLevelInstruction)
       formatResult ++= format(type_)
+    }
     for (funBody ← funBodyOpt) {
       funBody match {
         case ExprFunBody(equals, macroOpt, body) ⇒ {
@@ -1052,9 +1056,9 @@ trait ExprFormatter { self: HasFormattingPreferences with AnnotationFormatter wi
    * Groups consecutive single line params in a [[scalariform.parser.ParamClause]] for alignment.
    * The head of the return value (and head of the params list in the returned ConsecutiveSingleLineParams is guaranteed
    * to be the very first parameter in the paramClause. The other parameters are not necessarily in the order they appear.
+   *
    * @param paramClause
    * @param formatterState
-   *
    * @return List of grouped params. Left stores a group of parameters that can be aligned together,
    *         Right stores an unalignable param.
    */
